@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cryptotrackerr/CCList.dart';
 
 void main() => runApp(CryptoTracker());
 
@@ -10,7 +11,7 @@ class CryptoTracker extends StatelessWidget{
       theme: ThemeData(
         primarySwatch: Colors.blue
       ),
-      home: Text('Hi')
+      home: CCList()
     );
   }
 }
