@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:cryptotrackerr/CCData.dart';
 
 class CCList extends StatefulWidget{
@@ -11,16 +12,6 @@ class CCList extends StatefulWidget{
 class CCListState extends State<CCList>{
   List<CCData> data = [];
 
-  List<Widget> _buildList(){
-    return data.map((CCData f) => ListTile(
-      title: Text(f.symbol),
-      subtitle: Text(f.name),
-      leading: CircleAvatar(
-        child: Text(f.rank.toString())
-      ),
-      trailing: Text('\$${f.price.toString()}')
-    )).toList();
-  }
 
   @override
   Widget build(BuildContext context){
@@ -33,8 +24,24 @@ class CCListState extends State<CCList>{
           children: _buildList(),
         )
       ),floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh)
+        child: Icon(Icons.refresh),
+        onPressed: () => _loadCC(),
       ),
     );
+  }
+
+  _loadCC() async {
+    final response = await http.get('https://api.coinmarketcap.com/v2/ticker/?limit=10');
+  }
+
+  List<Widget> _buildList(){
+    return data.map((CCData f) => ListTile(
+      title: Text(f.symbol),
+      subtitle: Text(f.name),
+      leading: CircleAvatar(
+        child: Text(f.rank.toString())
+      ),
+      trailing: Text('\$${f.price.toString()}')
+    )).toList();
   }
 }
