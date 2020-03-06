@@ -39,7 +39,16 @@ class CCListState extends State<CCList>{
       var ccDataList = List<CCData>();
       allData.forEach((String key, dynamic val){
         var record = CCData(name: val['name'], symbol: val['symbol'], rank: val['rank'], price: val['quotes']['USD']['price']);
+        
+        ccDataList.add(record)
       })
+      // print(ccDataList);
+
+      setState(() {
+          data = ccDataList;
+      });
+
+      
     }
   }
 
@@ -52,5 +61,11 @@ class CCListState extends State<CCList>{
       ),
       trailing: Text('\$${f.price.toString()}')
     )).toList();
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _loadCC();
   }
 }
