@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as  htt;
 import 'package:cryptotrackerr/CCData.dart';
+import 'dart:convert';
 
 class CCList extends StatefulWidget{
   @override
@@ -11,7 +12,6 @@ class CCList extends StatefulWidget{
 
 class CCListState extends State<CCList>{
   List<CCData> data = [];
-
 
   @override
   Widget build(BuildContext context){
@@ -32,6 +32,15 @@ class CCListState extends State<CCList>{
 
   _loadCC() async {
     final response = await http.get('https://api.coinmarketcap.com/v2/ticker/?limit=10');
+    if(response.statusCode == 200){
+      // print(response.body);  
+      var allData = (json.decode(response.body) as Map)['data'] as Map<String, dynamic>
+
+      var ccDataList = List<CCData>();
+      allData.forEach((String key, dynamic val){
+        var record = CCData(name: val['name'], symbol: val['symbol'], rank: val['rank'], price: val['quotes']['USD']['price']);
+      })
+    }
   }
 
   List<Widget> _buildList(){
